@@ -27,12 +27,12 @@ public class Player {
     @Column(name = "age", nullable = false, length = 10)
     private String age;
 
-    // FK index_id
+
     @ManyToOne
     @JoinColumn(name = "index_id", nullable = false)
     private Indexer indexer;
 
-    // Quan hệ 1-n với PlayerIndex
+
     @OneToMany(mappedBy = "player")
     private List<PlayerIndex> playerIndexes;
 

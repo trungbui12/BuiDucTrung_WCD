@@ -27,11 +27,10 @@ public class Indexer {
     @Column(name = "valueMax", nullable = false)
     private Float valueMax;
 
-    // Quan hệ 1-n với Player
     @OneToMany(mappedBy = "indexer")
     private List<Player> players;
 
-    // Quan hệ 1-n với PlayerIndex
+
     @OneToMany(mappedBy = "indexer")
     private List<PlayerIndex> playerIndexes;
 

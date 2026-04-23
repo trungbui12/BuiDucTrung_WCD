@@ -18,12 +18,12 @@ public class PlayerIndex {
     @Column(name = "value", nullable = false)
     private Float value;
 
-    // FK player_id
+
     @ManyToOne
     @JoinColumn(name = "player_id", nullable = false)
     private Player player;
 
-    // FK index_id
+
     @ManyToOne
     @JoinColumn(name = "index_id", nullable = false)
     private Indexer indexer;
