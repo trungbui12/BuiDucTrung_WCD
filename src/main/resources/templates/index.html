@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Player Information</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-orange: #D3755E; /* Màu cam đất chủ đạo */
+            --bg-gray: #FEFEFE;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-gray);
+            padding: 50px;
+            margin: 0;
+        }
+
+        .container { max-width: 1000px; margin: auto; }
+
+        h1.title {
+            text-align: center;
+            color: #E09F3E;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        /* Form Layout 2 cột */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px 40px;
+            margin-bottom: 20px;
+        }
+
+        .form-group { display: flex; flex-direction: column; }
+
+        .form-group label {
+            margin-bottom: 8px;
+            color: #888;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        input, select {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            outline: none;
+            color: #555;
+        }
+
+        input::placeholder { color: #ccc; }
+
+        .btn-container { text-align: right; margin-top: 20px; margin-bottom: 40px; }
+
+        .btn-add {
+            background-color: var(--primary-orange);
+            color: white;
+            border: none;
+            padding: 10px 50px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: opacity 0.3s;
+        }
+        .btn-add:hover { opacity: 0.9; }
+
+        /* Table Style */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+
+        th {
+            background-color: var(--primary-orange);
+            color: white;
+            padding: 15px;
+            font-weight: normal;
+            text-align: center;
+        }
+
+        td { padding: 15px; border-bottom: 1px solid #eee; color: #444; text-align: center; }
+
+        .action-icons a {
+            margin: 0 8px;
+            text-decoration: none;
+            color: #8BA9D9;
+            font-size: 18px;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 50px;
+            background-color: var(--primary-orange);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="title">Player Information</h1>
+
+    <form th:action="@{/add}" method="post" th:object="${playerIndex}">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Player name</label>
+                <select th:field="*{player.id}" required>
+                    <option value="">Player name</option>
+                    <option th:each="p : ${players}" th:value="${p.id}" th:text="${p.name}"></option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Player age</label>
+                <input type="text" placeholder="Player age" readonly
+                       th:value="${playerIndex.player != null ? playerIndex.player.age : ''}">
+            </div>
+
+            <div class="form-group">
+                <label>Index name</label>
+                <select th:field="*{indexer.indexId}" required>
+                    <option value="">Index name</option>
+                    <option th:each="i : ${indexes}"
+                            th:value="${i.indexId}"
+                            th:text="${i.name}"></option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Value</label>
+                <select th:field="*{value}">
+                    <option value="">value</option>
+                    <option value="90">90</option>
+                    <option value="1">1</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <button type="submit" class="btn-add">Add</button>
+        </div>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Player name</th>
+            <th>Player age</th>
+            <th>Index name</th>
+            <th>Value</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${list}">
+            <td th:text="${item.id}"></td>
+            <td th:text="${item.player != null ? item.player.name : 'N/A'}"></td>
+            <td th:text="${item.player != null ? item.player.age : 'N/A'}"></td>
+            <td th:text="${item.indexer != null ? item.indexer.name : 'N/A'}"></td>
+            <td th:text="${item.value}"></td>
+            <td class="action-icons">
+                <a th:href="@{'/edit/' + ${item.id}}">
+                    <i class="fa-regular fa-pen-to-square"></i>
+                </a>
+                <a th:href="@{'/delete/' + ${item.id}}"
+                   onclick="return confirm('Bạn có chắc chắn muốn xóa?')">
+                    <i class="fa-regular fa-trash-can"></i>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="footer">
+        Số 8, Tôn Thất Thuyết, Cầu Giấy, Hà Nội
+    </div>
+</div>
+
+</body>
+</html>
